@@ -7,4 +7,5 @@ brew cask install docker
 $ docker --version
 查看docker 的信息
 $ docker info
+https://docs.docker.com/docker-for-mac/install/
 ```
