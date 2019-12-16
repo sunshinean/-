@@ -14,6 +14,18 @@ Docker 镜像是一个特殊的文件系统，除了提供容器运行时所需�
 （如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。
 
 ```
+## 获取镜像
+```
+从仓库拉取一个镜像
+Usage:	docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]
+$ docker pull ubuntu:16.04 // 获取名为 ubuntu 标签为16.04的官方镜像
+# 存储是一层一层存储，所以下载也是一层一层下载
+```
+## 查看镜像
+```
+docker images
+```
 
 # 容器（Container）
 ```
