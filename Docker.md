@@ -20,6 +20,7 @@ Docker 镜像是一个特殊的文件系统，除了提供容器运行时所需�
 从仓库拉取一个镜像
 Usage:	docker pull [OPTIONS] NAME[:TAG|@DIGEST]
 docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]
+
 $ docker pull ubuntu:16.04 # 获取名为 ubuntu 标签为16.04的官方镜像
 # 存储是一层一层存储，所以下载也是一层一层下载
 ```
@@ -39,6 +40,7 @@ django                  latest              eb40dcf64078        2 years ago     
 ## 删除镜像
 ```
 $ docker image rm [选项] <镜像1> [<镜像2> ...] # <镜像> 可以是 镜像短 ID、镜像长 ID、镜像名 或者 镜像摘要
+
 $ docker image rm ubuntu:18.04
 Untagged: ubuntu:18.04
 Untagged: ubuntu@sha256:6e9f67fa63b0323e9a1e587fd71c561ba48a034504fb804fd26fd8800039835d
@@ -67,6 +69,7 @@ $ docker image rm $(docker image ls -q -f before=mongo:3.2)
 $ docker container ls
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
 54b42e0e9891        registry            "/entrypoint.sh /etc…"   3 months ago        Up 4 days           0.0.0.0:5000->5000/tcp   registry
+
 查看容器所有命令
 $ docker container --help
 
@@ -115,6 +118,7 @@ python                  3.5                 61bbcc36b492        4 months ago    
 ubuntu                  16.04               5e13f8dd4c1a        4 months ago        120MB
 registry                latest              f32a97de94e1        9 months ago        25.8MB
 django                  latest              eb40dcf64078        2 years ago         436MB
+
 $ docker run -it python:latest
 Python 3.8.0 (default, Nov 23 2019, 05:36:56)
 [GCC 8.3.0] on linux
@@ -124,7 +128,9 @@ hello-world
 >>> exit
 Use exit() or Ctrl-D (i.e. EOF) to exit
 >>> exit()
+
 # -t 选项让Docker分配一个伪终端（pseudo-tty）并绑定到容器的标准输入上， -i 则让容器的标准输入保持打开
+
 当运行docker run 时 ：
 1.检查本地是否存在指定的镜像，不存在就从公有仓库下载
 2.利用镜像创建并启动一个容器
@@ -137,16 +143,19 @@ Use exit() or Ctrl-D (i.e. EOF) to exit
 ## 删除容器
 ```
 可以使用 docker container rm 来删除一个处于终止状态的容器
-终止容器
+
 $ docker container ls
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
 54b42e0e9891        registry            "/entrypoint.sh /etc…"   3 months ago        Up 4 days           0.0.0.0:5000->5000/tcp   registry
+
+终止容器
 $ docker container stop 54b42e0e
 54b42e0e
 
 删除容器
 $ docker container rm 54b42e0e
 54b42e0e
+
 $ docker container ls
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
@@ -156,6 +165,9 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 仓库是存放镜像的场所
 ```
 ## 共有仓库（Docker Hub）
+```
+Docker 官方维护了一个公共仓库 Docker Hub
+```
 ## 私有仓库 
 ```
 用户可以创建一个本地私有仓库
