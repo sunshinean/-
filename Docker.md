@@ -155,6 +155,82 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 ```
 仓库是存放镜像的场所
 ```
+## 共有仓库（Docker Hub）
+## 私有仓库 
+```
+用户可以创建一个本地私有仓库
+通过获取官方 registry 镜像来运行
+$ docker run -d -p 5000:5000 --restart=always --name registry registry
+aa3a1647476ebf2a25bdda1cc968222c321f447f0100fc5a56d09ad630ff20b1
+
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+aa3a1647476e        registry            "/entrypoint.sh /etc…"   4 seconds ago       Up 3 seconds        0.0.0.0:5000->5000/tcp   registry
+查看仓库中的镜像
+$  curl -X GET http://127.0.0.1:5000/v2/_catalog
+{"repositories":[]}
+
+```
+### 私有仓库的上传
+```
+创建好私有仓库之后，就可以使用 docker tag 来标记一个镜像，然后推送它到仓库
+$ docker tag python:latest 127.0.0.1:5000/python:latest
+$ docker images
+REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
+127.0.0.1:5000/python   latest              0a3a95c81a2b        3 weeks ago         932MB
+python                  latest              0a3a95c81a2b        3 weeks ago         932MB
+test/ubuntu             v2                  3547930cdaf3        2 months ago        146MB
+nginx                   latest              5a3221f0137b        4 months ago        126MB
+python                  3.5                 61bbcc36b492        4 months ago        909MB
+127.0.0.1:5000/ubuntu   16.04               5e13f8dd4c1a        4 months ago        120MB
+ubuntu                  16.04               5e13f8dd4c1a        4 months ago        120MB
+registry                latest              f32a97de94e1        9 months ago        25.8MB
+django                  latest              eb40dcf64078        2 years ago         436MB
+
+上传镜像
+$ docker push 127.0.0.1:5000/python
+The push refers to repository [127.0.0.1:5000/python]
+00947a3aa859: Pushed
+7290ddeeb6e8: Pushed
+d3bfe2faf397: Pushed
+cecea5b3282e: Pushed
+9437609235f0: Pushed
+bee1c15bf7e8: Pushed
+423d63eb4a27: Pushed
+7f9bf938b053: Pushed
+f2b4f0674ba3: Pushed
+latest: digest: sha256:76aace0349933165c34ae8f99b32d269103bc14818c1914b104c34521b92f288 size: 2217
+
+查看仓库中镜像
+$ curl -X GET http://127.0.0.1:5000/v2/_catalog
+{"repositories":["python"]}
+```
+### 私有仓库的镜像下载
+```
+删除本地127.0.0.1:5000/python:latest 镜像
+$ docker image rm 127.0.0.1:5000/python:latest
+Untagged: 127.0.0.1:5000/python:latest
+Untagged: 127.0.0.1:5000/python@sha256:76aace0349933165c34ae8f99b32d269103bc14818c1914b104c34521b92f288
+
+$ docker images
+REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
+python                  latest              0a3a95c81a2b        3 weeks ago         932MB
+test/ubuntu             v2                  3547930cdaf3        2 months ago        146MB
+nginx                   latest              5a3221f0137b        4 months ago        126MB
+python                  3.5                 61bbcc36b492        4 months ago        909MB
+127.0.0.1:5000/ubuntu   16.04               5e13f8dd4c1a        4 months ago        120MB
+ubuntu                  16.04               5e13f8dd4c1a        4 months ago        120MB
+registry                latest              f32a97de94e1        9 months ago        25.8MB
+django                  latest              eb40dcf64078        2 years ago         436MB
+
+下载仓库镜像
+$ docker pull 127.0.0.1:5000/python
+Using default tag: latest
+latest: Pulling from python
+Digest: sha256:76aace0349933165c34ae8f99b32d269103bc14818c1914b104c34521b92f288
+Status: Downloaded newer image for 127.0.0.1:5000/python:latest
+
+```
 # 参考
 ```
 https://yeasy.gitbooks.io/docker_practice/
