@@ -243,6 +243,22 @@ Digest: sha256:76aace0349933165c34ae8f99b32d269103bc14818c1914b104c34521b92f288
 Status: Downloaded newer image for 127.0.0.1:5000/python:latest
 
 ```
+# 使用Dockerfile定制镜像
+```
+由于实际应用中，需要额外定制单独的镜像，所以用Dockerfile还是很方便的
+Dockerfile 是一个文本文件,包含了一条条指令，把每一层修改、安装、构建、操作的命令都写入这个脚本，用这个脚本来构建、定制镜像。
+
+写Dockerfile
+FROM nginx
+RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+
+Dockerfile 文件所在目录执行
+$ docker build -t nginx:v1 .
+# . 表示当前目录
+
+参考 https://www.jianshu.com/p/cbce69c7a52f
+
+```
 # 参考
 ```
 https://yeasy.gitbooks.io/docker_practice/
