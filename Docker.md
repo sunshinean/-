@@ -259,6 +259,34 @@ $ docker build -t nginx:v1 .
 参考 https://www.jianshu.com/p/cbce69c7a52f
 
 ```
+```
+FROM python:3.7-alpine  # FROM指令指定的基础image
+
+MAINTAINER ***  # 指定镜像创建者信息
+
+# 安装软件
+RUN apt-get update -y && \
+ apt-get install vim -y && \
+ pip install uwsgi
+
+WORKDIR /data  # 切换目录
+
+COPY ./requirements.txt requirements.txt  # 复制本地主机的src文件为container的dest
+
+# 运行指令
+RUN pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r  requirements.txt
+
+EXPOSE 8888  # 指定容器需要映射到宿主机器的端口
+
+ADD . /data  # 从src复制文件到container的dest路径
+
+ENTRYPOINT ["uwsgi"]  # 设置container启动时执行的操作
+
+# ENTRYPOINT指定的是一个可执行的脚本或者程序的路径，该指定的脚本或者程序将会以param1和param2作为参数执行。所以如果CMD指令使用上面的形式，那么
+# Dockerfile中必须要有配套的ENTRYPOINT。
+
+CMD ["--ini", "uwsgi.ini"]  # 设置container启动时执行的操作
+```
 # 参考
 ```
 https://yeasy.gitbooks.io/docker_practice/
